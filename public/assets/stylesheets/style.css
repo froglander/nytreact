@@ -1,0 +1,15 @@
+body {
+    background-image: url('../images/background.jpg');
+}
+
+#nytheader {
+    background-color: rgba(255,255,255,.50);
+
+}
+#nytheader h1 {
+    font-family: 'Macondo Swash Caps', cursive;
+    color: #145ec7;
+    text-shadow: 2px 2px #bbf17c;
+    font-size: 88px;
+}
+
