@@ -7,9 +7,14 @@ body {
 
 }
 #nytheader h1 {
-    font-family: 'Macondo Swash Caps', cursive;
+    font-family: 'Cinzel', serif;
     color: #145ec7;
     text-shadow: 2px 2px #bbf17c;
     font-size: 88px;
 }
 
+#nytheader h3 {
+    /*font-family: Helvetica;*/
+    font-family: 'Cabin', sans-serif;
+}
+/* 451bd774a8f34d3a9b4807d6a38c91c9 */
