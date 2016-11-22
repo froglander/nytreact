@@ -25560,14 +25560,22 @@
 	    // Set initial state to blank values
 	    getInitialState: function getInitialState() {
 	        return {
-	            searchTopic: "Search topic",
-	            startYear: "2016",
-	            endYear: "2016"
+	            searchTopic: "",
+	            startYear: "",
+	            endYear: ""
 	        };
 	    },
 	    handleSubmit: function handleSubmit() {
 	        console.log("Search clicked");
 	        return false;
+	    },
+	    // Chrome console grumbled about having a value set without having an onChange event
+	    // to go with it
+	    handleChange: function handleChange(e) {
+	        console.log("input field changed");
+	        var changedState = {};
+	        changedState[e.target.id] = e.target.value;
+	        this.setState(changedState);
 	    },
 
 	    // Render the Query component
@@ -25607,7 +25615,7 @@
 	                                        null,
 	                                        "Topic"
 	                                    ),
-	                                    React.createElement("input", { type: "text", value: this.state.searchTopic, className: "form-control", id: "searchTopic" })
+	                                    React.createElement("input", { type: "text", value: this.state.searchTopic, className: "form-control", id: "searchTopic", onChange: this.handleChange })
 	                                ),
 	                                React.createElement(
 	                                    "div",
@@ -25617,7 +25625,7 @@
 	                                        null,
 	                                        "Start Year"
 	                                    ),
-	                                    React.createElement("input", { type: "text", value: this.state.startYear, className: "form-control", id: "startYear" })
+	                                    React.createElement("input", { type: "text", value: this.state.startYear, className: "form-control", id: "startYear", onChange: this.handleChange })
 	                                ),
 	                                React.createElement(
 	                                    "div",
@@ -25627,7 +25635,7 @@
 	                                        null,
 	                                        "End Year"
 	                                    ),
-	                                    React.createElement("input", { type: "text", value: this.state.endYear, className: "form-control", id: "endYear" })
+	                                    React.createElement("input", { type: "text", value: this.state.endYear, className: "form-control", id: "endYear", onChange: this.handleChange })
 	                                ),
 	                                React.createElement(
 	                                    "button",
