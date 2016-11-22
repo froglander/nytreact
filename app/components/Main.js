@@ -29,7 +29,7 @@ var Main = React.createClass({
 
                     </div>
 
-                    {/*<Search />*/}
+                    {/* This will dump the correct child component */}
                     {this.props.children}
 
 

@@ -25428,7 +25428,7 @@
 	// Reference the high-level components
 	var Main = __webpack_require__(223);
 	var Search = __webpack_require__(224);
-	var Saved = __webpack_require__(225);
+	var Saved = __webpack_require__(226);
 
 	// Export the Routes
 	module.exports = React.createElement(
@@ -25515,17 +25515,63 @@
 /* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	// Include React 
 	var React = __webpack_require__(1);
 
+	var Query = __webpack_require__(225);
+
 	var Search = React.createClass({
-	    displayName: "Search",
+	    displayName: 'Search',
+
 
 	    // Here we render the component
 	    render: function render() {
 
+	        return React.createElement(
+	            'div',
+	            { className: 'container' },
+	            React.createElement(Query, null)
+	        );
+	    }
+	});
+
+	// Export the component back for use in other files
+	module.exports = Search;
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	// Search - queries the NYT API for articles. Displays API search results from another possible
+	// Query component and Results component. Gives the user the ability to save an article to their
+	// Saved Articles.
+
+	// Require dependencies
+	var React = __webpack_require__(1);
+
+	var Query = React.createClass({
+	    displayName: "Query",
+
+
+	    // Set initial state to blank values
+	    getInitialState: function getInitialState() {
+	        return {
+	            searchTopic: "Search topic",
+	            startYear: "2016",
+	            endYear: "2016"
+	        };
+	    },
+	    handleSubmit: function handleSubmit() {
+	        console.log("Search clicked");
+	        return false;
+	    },
+
+	    // Render the Query component
+	    render: function render() {
 	        return React.createElement(
 	            "div",
 	            { className: "container" },
@@ -25561,7 +25607,7 @@
 	                                        null,
 	                                        "Topic"
 	                                    ),
-	                                    React.createElement("input", { type: "text", className: "form-control", id: "searchTopic" })
+	                                    React.createElement("input", { type: "text", value: this.state.searchTopic, className: "form-control", id: "searchTopic" })
 	                                ),
 	                                React.createElement(
 	                                    "div",
@@ -25571,7 +25617,7 @@
 	                                        null,
 	                                        "Start Year"
 	                                    ),
-	                                    React.createElement("input", { type: "text", className: "form-control", id: "startYear" })
+	                                    React.createElement("input", { type: "text", value: this.state.startYear, className: "form-control", id: "startYear" })
 	                                ),
 	                                React.createElement(
 	                                    "div",
@@ -25581,11 +25627,11 @@
 	                                        null,
 	                                        "End Year"
 	                                    ),
-	                                    React.createElement("input", { type: "text", className: "form-control", id: "endYear" })
+	                                    React.createElement("input", { type: "text", value: this.state.endYear, className: "form-control", id: "endYear" })
 	                                ),
 	                                React.createElement(
 	                                    "button",
-	                                    { type: "submit", className: "btn btn-primary btn-lg btn-block" },
+	                                    { type: "submit", className: "btn btn-primary btn-lg btn-block", onClick: this.handleSubmit },
 	                                    "Search\xA0",
 	                                    React.createElement("span", { className: "glyphicon glyphicon-search" })
 	                                )
@@ -25596,13 +25642,13 @@
 	            )
 	        );
 	    }
+
 	});
 
-	// Export the component back for use in other files
-	module.exports = Search;
+	module.exports = Query;
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25635,7 +25681,7 @@
 								React.createElement(
 									"h3",
 									{ className: "panel-title" },
-									"Movie Info"
+									"Saved Articles"
 								)
 							),
 							React.createElement(
