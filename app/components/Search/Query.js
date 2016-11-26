@@ -4,6 +4,7 @@
 
 // Require dependencies
 var React = require('react');
+var axios = require('axios');
 
 var Query = React.createClass({
 
@@ -12,22 +13,50 @@ var Query = React.createClass({
         return {
             searchTopic: "",
             startYear: "",
-            endYear: ""
+            endYear: " "
         }
     },
-    handleSubmit: function() {
-        console.log("Search clicked");
-        return false;
-    },
+    // handleSubmit: function() {
+    //     console.log("Search clicked");
+    //     return false;
+    // },
     // Chrome console grumbled about having a value set without having an onChange event
     // to go with it
-    handleChange: function(e) {
+    handleChange: function (e) {
         console.log("input field changed");
         var changedState = {};
         changedState[e.target.id] = e.target.value;
         this.setState(changedState);
     },
+    // Send the search terms to the parent component
+    handleSubmit: function () {
+        console.log("Submit clicked");
 
+        var apiKey = "451bd774a8f34d3a9b4807d6a38c91c9";
+        var queryTerm = this.state.searchTopic.trim();
+        var queryStartYear = this.state.startYear.trim() + "0101";
+        var queryEndYear = this.state.endYear.trim() + "1231";
+
+        console.log("queryTerm: ", queryTerm);
+        console.log("queryStartYear: ", queryStartYear);
+        console.log("queryEndYear: ", queryEndYear);
+
+        return axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json', {
+            params: {
+                'api-key': apiKey,
+                'q': queryTerm,
+                'begin_date': queryStartYear,
+                'end_date': queryEndYear
+            }
+        })
+            .then(function (results) {
+                console.log("results: ", results.data.response);
+
+                return results.data.response;
+            });
+        //this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
+        return false;
+    },
     // Render the Query component
     render: function () {
         return (
@@ -44,17 +73,21 @@ var Query = React.createClass({
                                 <form>
                                     <div className="form-group">
                                         <label>Topic</label>
-                                        <input type="text" value={this.state.searchTopic} className="form-control" id="searchTopic" onChange={this.handleChange}/>
+                                        <input type="text" value={this.state.searchTopic} className="form-control"
+                                               id="searchTopic" onChange={this.handleChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label>Start Year</label>
-                                        <input type="text" value={this.state.startYear} className="form-control" id="startYear" onChange={this.handleChange}/>
+                                        <input type="text" value={this.state.startYear} className="form-control"
+                                               id="startYear" onChange={this.handleChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label>End Year</label>
-                                        <input type="text" value={this.state.endYear} className="form-control" id="endYear" onChange={this.handleChange}/>
+                                        <input type="text" value={this.state.endYear} className="form-control"
+                                               id="endYear" onChange={this.handleChange}/>
                                     </div>
-                                    <button type="submit" className="btn btn-primary btn-lg btn-block" onClick={this.handleSubmit}>
+                                    <button type="submit" className="btn btn-primary btn-lg btn-block"
+                                            onClick={this.handleSubmit}>
                                         Search&nbsp;<span className="glyphicon glyphicon-search"></span>
                                     </button>
                                 </form>
