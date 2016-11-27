@@ -50,9 +50,10 @@ var Query = React.createClass({
             }
         })
             .then(function(results){
-                console.log("Results:", results.data.response);
+                console.log("Query Results:", results.data.response);
 
-                return results.data.response;
+                return results;
+                // return false;
             });
 
 

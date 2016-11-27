@@ -25521,6 +25521,7 @@
 	var React = __webpack_require__(1);
 
 	var Query = __webpack_require__(225);
+	var Results = __webpack_require__(252);
 
 	var Search = React.createClass({
 	    displayName: 'Search',
@@ -25543,13 +25544,16 @@
 	            endYear: end
 	        });
 	    },
+
 	    // Here we render the component
 	    render: function render() {
+	        console.log("Render search results: ", this.state.results);
 
 	        return React.createElement(
 	            'div',
 	            { className: 'container' },
-	            React.createElement(Query, { submitSearch: this.searchQuery })
+	            React.createElement(Query, { submitSearch: this.searchQuery }),
+	            React.createElement(Results, { results: this.state.results })
 	        );
 	    }
 	});
@@ -25616,9 +25620,10 @@
 	                'end_date': queryEndYear
 	            }
 	        }).then(function (results) {
-	            console.log("Results:", results.data.response);
+	            console.log("Query Results:", results.data.response);
 
-	            return results.data.response;
+	            return results;
+	            // return false;
 	        });
 
 	        //this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
@@ -27263,6 +27268,114 @@
 	  };
 	};
 
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Results = React.createClass({
+	    displayName: "Results",
+
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            headline: "",
+	            web_url: "",
+	            pub_date: ""
+
+	        };
+	    },
+	    render: function render() {
+	        if (!this.props.results.hasOwnProperty('docs')) {
+	            console.log("it's blank");
+
+	            return React.createElement(
+	                "li",
+	                { className: "list-group-item" },
+	                React.createElement(
+	                    "h3",
+	                    null,
+	                    "Enter search terms to begin"
+	                )
+	            );
+	        } else {
+	            console.log("search results shouldn't be blank");
+
+	            var articles = this.props.results.docs.map(function (article, index) {
+	                return React.createElement(
+	                    "div",
+	                    { key: index },
+	                    React.createElement(
+	                        "li",
+	                        { className: "list-group-item" },
+	                        React.createElement(
+	                            "h3",
+	                            null,
+	                            React.createElement(
+	                                "span",
+	                                null,
+	                                article.headline.main
+	                            ),
+	                            React.createElement(
+	                                "a",
+	                                { href: article.web_url },
+	                                "View Article"
+	                            )
+	                        ),
+	                        React.createElement(
+	                            "p",
+	                            null,
+	                            "Date published: ",
+	                            article.pub_date
+	                        )
+	                    )
+	                );
+	            }.bind(this));
+	        }
+	        console.log("assigned articles values");
+
+	        return React.createElement(
+	            "div",
+	            { className: "container" },
+	            React.createElement(
+	                "div",
+	                { className: "row" },
+	                React.createElement(
+	                    "div",
+	                    { className: "col-sm-12" },
+	                    React.createElement(
+	                        "div",
+	                        { className: "panel panel-default" },
+	                        React.createElement(
+	                            "div",
+	                            { className: "panel-heading" },
+	                            React.createElement(
+	                                "h3",
+	                                { className: "panel-title" },
+	                                "Results"
+	                            )
+	                        ),
+	                        React.createElement(
+	                            "div",
+	                            { className: "panel-body" },
+	                            React.createElement(
+	                                "ul",
+	                                { className: "list-group" },
+	                                articles
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = Results;
 
 /***/ }
 /******/ ]);

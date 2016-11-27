@@ -2,6 +2,7 @@
 var React = require('react');
 
 var Query = require('./Search/Query');
+var Results = require('./Search/Results')
 
 var Search = React.createClass({
 
@@ -24,10 +25,14 @@ var Search = React.createClass({
     },
     // Here we render the component
     render: function () {
+        console.log("Render search results: ", this.state.results)
 
         return (
             <div className="container">
                 <Query submitSearch={this.searchQuery} />
+
+                <Results results={this.state.results} />
+                {/*<Results />*/}
             </div>
         )
     }
