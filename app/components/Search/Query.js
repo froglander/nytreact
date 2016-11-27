@@ -22,14 +22,14 @@ var Query = React.createClass({
     // },
     // Chrome console grumbled about having a value set without having an onChange event
     // to go with it
-    handleChange: function (e) {
+    handleChange: function(e) {
         console.log("input field changed");
         var changedState = {};
         changedState[e.target.id] = e.target.value;
         this.setState(changedState);
     },
     // Send the search terms to the parent component
-    handleSubmit: function () {
+    handleSubmit: function() {
         console.log("Submit clicked");
 
         var apiKey = "451bd774a8f34d3a9b4807d6a38c91c9";
@@ -49,13 +49,15 @@ var Query = React.createClass({
                 'end_date': queryEndYear
             }
         })
-            .then(function (results) {
-                console.log("results: ", results.data.response);
+            .then(function(results){
+                console.log("Results:", results.data.response);
 
                 return results.data.response;
             });
+
+
         //this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
-        return false;
+        //return false;
     },
     // Render the Query component
     render: function () {
@@ -73,21 +75,17 @@ var Query = React.createClass({
                                 <form>
                                     <div className="form-group">
                                         <label>Topic</label>
-                                        <input type="text" value={this.state.searchTopic} className="form-control"
-                                               id="searchTopic" onChange={this.handleChange}/>
+                                        <input type="text" value={this.state.searchTopic} className="form-control" id="searchTopic" onChange={this.handleChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label>Start Year</label>
-                                        <input type="text" value={this.state.startYear} className="form-control"
-                                               id="startYear" onChange={this.handleChange}/>
+                                        <input type="text" value={this.state.startYear} className="form-control" id="startYear" onChange={this.handleChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label>End Year</label>
-                                        <input type="text" value={this.state.endYear} className="form-control"
-                                               id="endYear" onChange={this.handleChange}/>
+                                        <input type="text" value={this.state.endYear} className="form-control" id="endYear" onChange={this.handleChange}/>
                                     </div>
-                                    <button type="submit" className="btn btn-primary btn-lg btn-block"
-                                            onClick={this.handleSubmit}>
+                                    <button type="submit" className="btn btn-primary btn-lg btn-block" onClick={this.handleSubmit}>
                                         Search&nbsp;<span className="glyphicon glyphicon-search"></span>
                                     </button>
                                 </form>

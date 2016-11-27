@@ -25616,12 +25616,13 @@
 	                'end_date': queryEndYear
 	            }
 	        }).then(function (results) {
-	            console.log("results: ", results.data.response);
+	            console.log("Results:", results.data.response);
 
 	            return results.data.response;
 	        });
+
 	        //this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
-	        return false;
+	        //return false;
 	    },
 
 	    // Render the Query component
@@ -25661,8 +25662,7 @@
 	                                        null,
 	                                        'Topic'
 	                                    ),
-	                                    React.createElement('input', { type: 'text', value: this.state.searchTopic, className: 'form-control',
-	                                        id: 'searchTopic', onChange: this.handleChange })
+	                                    React.createElement('input', { type: 'text', value: this.state.searchTopic, className: 'form-control', id: 'searchTopic', onChange: this.handleChange })
 	                                ),
 	                                React.createElement(
 	                                    'div',
@@ -25672,8 +25672,7 @@
 	                                        null,
 	                                        'Start Year'
 	                                    ),
-	                                    React.createElement('input', { type: 'text', value: this.state.startYear, className: 'form-control',
-	                                        id: 'startYear', onChange: this.handleChange })
+	                                    React.createElement('input', { type: 'text', value: this.state.startYear, className: 'form-control', id: 'startYear', onChange: this.handleChange })
 	                                ),
 	                                React.createElement(
 	                                    'div',
@@ -25683,13 +25682,11 @@
 	                                        null,
 	                                        'End Year'
 	                                    ),
-	                                    React.createElement('input', { type: 'text', value: this.state.endYear, className: 'form-control',
-	                                        id: 'endYear', onChange: this.handleChange })
+	                                    React.createElement('input', { type: 'text', value: this.state.endYear, className: 'form-control', id: 'endYear', onChange: this.handleChange })
 	                                ),
 	                                React.createElement(
 	                                    'button',
-	                                    { type: 'submit', className: 'btn btn-primary btn-lg btn-block',
-	                                        onClick: this.handleSubmit },
+	                                    { type: 'submit', className: 'btn btn-primary btn-lg btn-block', onClick: this.handleSubmit },
 	                                    'Search\xA0',
 	                                    React.createElement('span', { className: 'glyphicon glyphicon-search' })
 	                                )
