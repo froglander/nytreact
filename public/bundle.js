@@ -25537,6 +25537,7 @@
 	            results: {}
 	        };
 	    },
+	    // Set the state for the search terms
 	    setQuery: function setQuery(query, start, end) {
 	        console.log("Search query");
 	        this.setState({
@@ -25544,10 +25545,11 @@
 	            startYear: start,
 	            endYear: end
 	        });
-	        this.runQuery();
 	    },
-	    runQuery: function runQuery() {
-	        // componentDidUpdate: function() {
+
+	    // Originally had this as runQuery and I called it from setQuery, but decided to
+	    // try this and it seems to be working
+	    componentDidUpdate: function componentDidUpdate() {
 	        console.log("runQuery");
 
 	        var apiKey = "451bd774a8f34d3a9b4807d6a38c91c9";
@@ -25568,18 +25570,16 @@
 	            }
 	        }).then(function (results) {
 	            console.log("runQuery Search Results:", results.data.response);
-
-	            //return results.data.response;
-	            // return false;
+	            // Set the state of the results property to the results of the search
+	            // so it can be passed down to the Results component
 	            this.setState({
 	                results: results.data.response
 	            });
 	        }.bind(this));
 	    },
-
 	    // Here we render the component
 	    render: function render() {
-	        console.log("Render search results: ", this.state.results);
+	        console.log("Render the search results: ", this.state.results);
 
 	        return React.createElement(
 	            'div',
@@ -27080,16 +27080,11 @@
 
 	"use strict";
 
-	// Search - queries the NYT API for articles. Displays API search results from another possible
-	// Query component and Results component. Gives the user the ability to save an article to their
-	// Saved Articles.
-
 	// Require dependencies
 	var React = __webpack_require__(1);
 
 	var Query = React.createClass({
 	    displayName: "Query",
-
 
 	    // Set initial state to blank values
 	    getInitialState: function getInitialState() {
@@ -27099,10 +27094,6 @@
 	            endYear: " "
 	        };
 	    },
-	    // handleSubmit: function() {
-	    //     console.log("Search clicked");
-	    //     return false;
-	    // },
 	    // Chrome console grumbled about having a value set without having an onChange event
 	    // to go with it
 	    handleChange: function handleChange(e) {
@@ -27114,15 +27105,9 @@
 	    // Send the search terms to the parent component
 	    handleSubmit: function handleSubmit() {
 	        console.log("Submit clicked");
-
-	        console.log("this.state.searchTopic: ", this.state.searchTopic);
-	        console.log("this.state.startYear: ", this.state.startYear);
-	        console.log("this.state.endYear: ", this.state.endYear);
-
 	        this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
 	        return false;
 	    },
-
 	    // Render the Query component
 	    render: function render() {
 	        return React.createElement(
@@ -27213,29 +27198,60 @@
 
 
 	    getInitialState: function getInitialState() {
+	        // Set up initial values
 	        return {
 	            headline: "",
 	            web_url: "",
 	            pub_date: ""
-
 	        };
 	    },
 	    render: function render() {
 	        if (!this.props.results.hasOwnProperty('docs')) {
-	            console.log("it's blank");
-
+	            // If it is blank, return a default
 	            return React.createElement(
-	                "li",
-	                { className: "list-group-item" },
+	                "div",
+	                { className: "container" },
 	                React.createElement(
-	                    "h3",
-	                    null,
-	                    "Enter search terms to begin"
+	                    "div",
+	                    { className: "row" },
+	                    React.createElement(
+	                        "div",
+	                        { className: "col-sm-12" },
+	                        React.createElement(
+	                            "div",
+	                            { className: "panel panel-default" },
+	                            React.createElement(
+	                                "div",
+	                                { className: "panel-heading" },
+	                                React.createElement(
+	                                    "h3",
+	                                    { className: "panel-title" },
+	                                    "Results"
+	                                )
+	                            ),
+	                            React.createElement(
+	                                "div",
+	                                { className: "panel-body" },
+	                                React.createElement(
+	                                    "ul",
+	                                    { className: "list-group" },
+	                                    React.createElement(
+	                                        "li",
+	                                        { className: "list-group-item" },
+	                                        React.createElement(
+	                                            "h3",
+	                                            null,
+	                                            "Enter search terms to begin"
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
 	                )
 	            );
 	        } else {
-	            console.log("search results shouldn't be blank");
-
+	            // Otherwise, build the resultset and return it
 	            var articles = this.props.results.docs.map(function (article, index) {
 	                return React.createElement(
 	                    "div",
@@ -27246,11 +27262,11 @@
 	                        React.createElement(
 	                            "h3",
 	                            null,
-	                            React.createElement(
-	                                "span",
-	                                null,
-	                                article.headline.main
-	                            ),
+	                            article.headline.main
+	                        ),
+	                        React.createElement(
+	                            "h4",
+	                            null,
 	                            React.createElement(
 	                                "a",
 	                                { href: article.web_url },
@@ -27267,8 +27283,8 @@
 	                );
 	            }.bind(this));
 	        }
-	        console.log("assigned articles values");
 
+	        // Now render the results!
 	        return React.createElement(
 	            "div",
 	            { className: "container" },

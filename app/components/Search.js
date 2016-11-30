@@ -16,6 +16,7 @@ var Search = React.createClass({
             results: {}
         }
     },
+    // Set the state for the search terms
     setQuery: function(query, start, end) {
         console.log("Search query");
         this.setState({
@@ -23,10 +24,11 @@ var Search = React.createClass({
             startYear: start,
             endYear: end
         });
-        this.runQuery();
     },
-    runQuery: function() {
-    // componentDidUpdate: function() {
+
+    // Originally had this as runQuery and I called it from setQuery, but decided to
+    // try this and it seems to be working
+    componentDidUpdate: function() {
         console.log("runQuery");
 
         var apiKey = "451bd774a8f34d3a9b4807d6a38c91c9";
@@ -48,9 +50,8 @@ var Search = React.createClass({
         })
             .then(function(results){
                 console.log("runQuery Search Results:", results.data.response);
-
-                //return results.data.response;
-                // return false;
+                // Set the state of the results property to the results of the search
+                // so it can be passed down to the Results component
                 this.setState({
                     results: results.data.response
                 })
@@ -58,14 +59,13 @@ var Search = React.createClass({
     },
     // Here we render the component
     render: function () {
-        console.log("Render search results: ", this.state.results)
+        console.log("Render the search results: ", this.state.results)
 
         return (
             <div className="container">
                 <Query submitSearch={this.setQuery} />
 
                 <Results results={this.state.results} />
-                {/*<Results />*/}
             </div>
         )
     }

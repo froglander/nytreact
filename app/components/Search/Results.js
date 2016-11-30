@@ -3,45 +3,54 @@ var React = require('react');
 var Results = React.createClass({
 
     getInitialState: function () {
+        // Set up initial values
         return {
             headline: "",
             web_url: "",
             pub_date: "",
-
         }
     },
     render: function () {
         if (!this.props.results.hasOwnProperty('docs')) {
-            console.log("it's blank");
-
+            // If it is blank, return a default
             return (
-                <li className="list-group-item">
-                    <h3>
-                        Enter search terms to begin
-                    </h3>
-                </li>
-
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <div className="panel panel-default">
+                                <div className="panel-heading">
+                                    <h3 className="panel-title">Results</h3>
+                                </div>
+                                <div className="panel-body">
+                                    <ul className="list-group">
+                                        <li className="list-group-item">
+                                            <h3>
+                                                Enter search terms to begin
+                                            </h3>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )
-        }
-        else {
-            console.log("search results shouldn't be blank");
-
+        } else {
+            // Otherwise, build the resultset and return it
             var articles = this.props.results.docs.map(function (article, index) {
                 return (
                     <div key={index}>
                         <li className="list-group-item">
-                            <h3>
-                                <span>{article.headline.main}</span>
-                                <a href={article.web_url}>View Article</a>
-                            </h3>
+                            <h3>{article.headline.main}</h3>
+                            <h4><a href={article.web_url}>View Article</a></h4>
                             <p>Date published: {article.pub_date}</p>
                         </li>
                     </div>
                 )
             }.bind(this))
         }
-        console.log("assigned articles values");
 
+        // Now render the results!
         return (
             <div className="container">
                 <div className="row">

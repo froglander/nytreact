@@ -1,13 +1,8 @@
-// Search - queries the NYT API for articles. Displays API search results from another possible
-// Query component and Results component. Gives the user the ability to save an article to their
-// Saved Articles.
-
 // Require dependencies
 var React = require('react');
 
 
 var Query = React.createClass({
-
     // Set initial state to blank values
     getInitialState: function () {
         return {
@@ -16,10 +11,6 @@ var Query = React.createClass({
             endYear: " "
         }
     },
-    // handleSubmit: function() {
-    //     console.log("Search clicked");
-    //     return false;
-    // },
     // Chrome console grumbled about having a value set without having an onChange event
     // to go with it
     handleChange: function(e) {
@@ -31,11 +22,6 @@ var Query = React.createClass({
     // Send the search terms to the parent component
     handleSubmit: function() {
         console.log("Submit clicked");
-
-        console.log("this.state.searchTopic: ", this.state.searchTopic);
-        console.log("this.state.startYear: ", this.state.startYear);
-        console.log("this.state.endYear: ", this.state.endYear);
-
         this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
         return false;
     },
@@ -43,8 +29,6 @@ var Query = React.createClass({
     render: function () {
         return (
             <div className="container">
-
-                {/*<div className="col-sm-offset-2 col-sm-8">*/}
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="panel panel-default">
