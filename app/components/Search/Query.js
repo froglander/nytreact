@@ -4,7 +4,7 @@
 
 // Require dependencies
 var React = require('react');
-var axios = require('axios');
+
 
 var Query = React.createClass({
 
@@ -32,33 +32,12 @@ var Query = React.createClass({
     handleSubmit: function() {
         console.log("Submit clicked");
 
-        var apiKey = "451bd774a8f34d3a9b4807d6a38c91c9";
-        var queryTerm = this.state.searchTopic.trim();
-        var queryStartYear = this.state.startYear.trim() + "0101";
-        var queryEndYear = this.state.endYear.trim() + "1231";
+        console.log("this.state.searchTopic: ", this.state.searchTopic);
+        console.log("this.state.startYear: ", this.state.startYear);
+        console.log("this.state.endYear: ", this.state.endYear);
 
-        console.log("queryTerm: ", queryTerm);
-        console.log("queryStartYear: ", queryStartYear);
-        console.log("queryEndYear: ", queryEndYear);
-
-        return axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json', {
-            params: {
-                'api-key': apiKey,
-                'q': queryTerm,
-                'begin_date': queryStartYear,
-                'end_date': queryEndYear
-            }
-        })
-            .then(function(results){
-                console.log("Query Results:", results.data.response);
-
-                return results;
-                // return false;
-            });
-
-
-        //this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
-        //return false;
+        this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
+        return false;
     },
     // Render the Query component
     render: function () {

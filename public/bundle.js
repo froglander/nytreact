@@ -25428,7 +25428,7 @@
 	// Reference the high-level components
 	var Main = __webpack_require__(223);
 	var Search = __webpack_require__(224);
-	var Saved = __webpack_require__(226);
+	var Saved = __webpack_require__(252);
 
 	// Export the Routes
 	module.exports = React.createElement(
@@ -25519,9 +25519,10 @@
 
 	// Include React 
 	var React = __webpack_require__(1);
+	var axios = __webpack_require__(225);
 
-	var Query = __webpack_require__(225);
-	var Results = __webpack_require__(252);
+	var Query = __webpack_require__(250);
+	var Results = __webpack_require__(251);
 
 	var Search = React.createClass({
 	    displayName: 'Search',
@@ -25533,75 +25534,21 @@
 	            searchTopic: "",
 	            startYear: "",
 	            endYear: " ",
-	            results: []
+	            results: {}
 	        };
 	    },
-	    searchQuery: function searchQuery(query, start, end) {
+	    setQuery: function setQuery(query, start, end) {
 	        console.log("Search query");
 	        this.setState({
 	            searchTopic: query,
 	            startYear: start,
 	            endYear: end
 	        });
+	        this.runQuery();
 	    },
-
-	    // Here we render the component
-	    render: function render() {
-	        console.log("Render search results: ", this.state.results);
-
-	        return React.createElement(
-	            'div',
-	            { className: 'container' },
-	            React.createElement(Query, { submitSearch: this.searchQuery }),
-	            React.createElement(Results, { results: this.state.results })
-	        );
-	    }
-	});
-
-	// Export the component back for use in other files
-	module.exports = Search;
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	// Search - queries the NYT API for articles. Displays API search results from another possible
-	// Query component and Results component. Gives the user the ability to save an article to their
-	// Saved Articles.
-
-	// Require dependencies
-	var React = __webpack_require__(1);
-	var axios = __webpack_require__(227);
-
-	var Query = React.createClass({
-	    displayName: 'Query',
-
-
-	    // Set initial state to blank values
-	    getInitialState: function getInitialState() {
-	        return {
-	            searchTopic: "",
-	            startYear: "",
-	            endYear: " "
-	        };
-	    },
-	    // handleSubmit: function() {
-	    //     console.log("Search clicked");
-	    //     return false;
-	    // },
-	    // Chrome console grumbled about having a value set without having an onChange event
-	    // to go with it
-	    handleChange: function handleChange(e) {
-	        console.log("input field changed");
-	        var changedState = {};
-	        changedState[e.target.id] = e.target.value;
-	        this.setState(changedState);
-	    },
-	    // Send the search terms to the parent component
-	    handleSubmit: function handleSubmit() {
-	        console.log("Submit clicked");
+	    runQuery: function runQuery() {
+	        // componentDidUpdate: function() {
+	        console.log("runQuery");
 
 	        var apiKey = "451bd774a8f34d3a9b4807d6a38c91c9";
 	        var queryTerm = this.state.searchTopic.trim();
@@ -25620,189 +25567,47 @@
 	                'end_date': queryEndYear
 	            }
 	        }).then(function (results) {
-	            console.log("Query Results:", results.data.response);
+	            console.log("runQuery Search Results:", results.data.response);
 
-	            return results;
+	            //return results.data.response;
 	            // return false;
-	        });
-
-	        //this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
-	        //return false;
+	            this.setState({
+	                results: results.data.response
+	            });
+	        }.bind(this));
 	    },
 
-	    // Render the Query component
+	    // Here we render the component
 	    render: function render() {
+	        console.log("Render search results: ", this.state.results);
+
 	        return React.createElement(
 	            'div',
 	            { className: 'container' },
-	            React.createElement(
-	                'div',
-	                { className: 'row' },
-	                React.createElement(
-	                    'div',
-	                    { className: 'col-sm-12' },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'panel panel-default' },
-	                        React.createElement(
-	                            'div',
-	                            { className: 'panel-heading' },
-	                            React.createElement(
-	                                'h3',
-	                                { className: 'panel-title' },
-	                                'Search'
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            { className: 'panel-body' },
-	                            React.createElement(
-	                                'form',
-	                                null,
-	                                React.createElement(
-	                                    'div',
-	                                    { className: 'form-group' },
-	                                    React.createElement(
-	                                        'label',
-	                                        null,
-	                                        'Topic'
-	                                    ),
-	                                    React.createElement('input', { type: 'text', value: this.state.searchTopic, className: 'form-control', id: 'searchTopic', onChange: this.handleChange })
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { className: 'form-group' },
-	                                    React.createElement(
-	                                        'label',
-	                                        null,
-	                                        'Start Year'
-	                                    ),
-	                                    React.createElement('input', { type: 'text', value: this.state.startYear, className: 'form-control', id: 'startYear', onChange: this.handleChange })
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { className: 'form-group' },
-	                                    React.createElement(
-	                                        'label',
-	                                        null,
-	                                        'End Year'
-	                                    ),
-	                                    React.createElement('input', { type: 'text', value: this.state.endYear, className: 'form-control', id: 'endYear', onChange: this.handleChange })
-	                                ),
-	                                React.createElement(
-	                                    'button',
-	                                    { type: 'submit', className: 'btn btn-primary btn-lg btn-block', onClick: this.handleSubmit },
-	                                    'Search\xA0',
-	                                    React.createElement('span', { className: 'glyphicon glyphicon-search' })
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            )
+	            React.createElement(Query, { submitSearch: this.setQuery }),
+	            React.createElement(Results, { results: this.state.results })
 	        );
 	    }
-
 	});
 
-	module.exports = Query;
+	// Export the component back for use in other files
+	module.exports = Search;
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(226);
 
 /***/ },
 /* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	// Include React 
-	var React = __webpack_require__(1);
-
-	var Saved = React.createClass({
-		displayName: "Saved",
-
-
-		// Here we render the component
-		render: function render() {
-
-			return React.createElement(
-				"div",
-				{ className: "container" },
-				React.createElement(
-					"div",
-					{ className: "row" },
-					React.createElement(
-						"div",
-						{ className: "col-sm-12" },
-						React.createElement(
-							"div",
-							{ className: "panel panel-default" },
-							React.createElement(
-								"div",
-								{ className: "panel-heading" },
-								React.createElement(
-									"h3",
-									{ className: "panel-title" },
-									"Saved Articles"
-								)
-							),
-							React.createElement(
-								"div",
-								{ className: "panel-body" },
-								React.createElement(
-									"p",
-									null,
-									React.createElement(
-										"strong",
-										null,
-										"mjlover:"
-									),
-									" OMG I LOVE THIS PART!!! "
-								),
-								React.createElement(
-									"p",
-									null,
-									React.createElement(
-										"strong",
-										null,
-										"bugsboy:"
-									),
-									" Best movie of all time."
-								),
-								React.createElement(
-									"p",
-									null,
-									React.createElement(
-										"strong",
-										null,
-										"bigtroll:"
-									),
-									" Porky needs to go on a diet."
-								)
-							)
-						)
-					)
-				)
-			);
-		}
-	});
-
-	// Export the component back for use in other files
-	module.exports = Saved;
-
-/***/ },
-/* 227 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(228);
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
-	var utils = __webpack_require__(229);
-	var bind = __webpack_require__(230);
-	var Axios = __webpack_require__(231);
+	var utils = __webpack_require__(227);
+	var bind = __webpack_require__(228);
+	var Axios = __webpack_require__(229);
 
 	/**
 	 * Create an instance of Axios
@@ -25835,15 +25640,15 @@
 	};
 
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(249);
-	axios.CancelToken = __webpack_require__(250);
-	axios.isCancel = __webpack_require__(246);
+	axios.Cancel = __webpack_require__(247);
+	axios.CancelToken = __webpack_require__(248);
+	axios.isCancel = __webpack_require__(244);
 
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(251);
+	axios.spread = __webpack_require__(249);
 
 	module.exports = axios;
 
@@ -25852,12 +25657,12 @@
 
 
 /***/ },
-/* 229 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var bind = __webpack_require__(230);
+	var bind = __webpack_require__(228);
 
 	/*global toString:true*/
 
@@ -26157,7 +25962,7 @@
 
 
 /***/ },
-/* 230 */
+/* 228 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26174,17 +25979,17 @@
 
 
 /***/ },
-/* 231 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaults = __webpack_require__(232);
-	var utils = __webpack_require__(229);
-	var InterceptorManager = __webpack_require__(243);
-	var dispatchRequest = __webpack_require__(244);
-	var isAbsoluteURL = __webpack_require__(247);
-	var combineURLs = __webpack_require__(248);
+	var defaults = __webpack_require__(230);
+	var utils = __webpack_require__(227);
+	var InterceptorManager = __webpack_require__(241);
+	var dispatchRequest = __webpack_require__(242);
+	var isAbsoluteURL = __webpack_require__(245);
+	var combineURLs = __webpack_require__(246);
 
 	/**
 	 * Create a new instance of Axios
@@ -26265,13 +26070,13 @@
 
 
 /***/ },
-/* 232 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(229);
-	var normalizeHeaderName = __webpack_require__(233);
+	var utils = __webpack_require__(227);
+	var normalizeHeaderName = __webpack_require__(231);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -26288,10 +26093,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(234);
+	    adapter = __webpack_require__(232);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(234);
+	    adapter = __webpack_require__(232);
 	  }
 	  return adapter;
 	}
@@ -26358,12 +26163,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 233 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -26376,18 +26181,18 @@
 
 
 /***/ },
-/* 234 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(229);
-	var settle = __webpack_require__(235);
-	var buildURL = __webpack_require__(238);
-	var parseHeaders = __webpack_require__(239);
-	var isURLSameOrigin = __webpack_require__(240);
-	var createError = __webpack_require__(236);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(241);
+	var utils = __webpack_require__(227);
+	var settle = __webpack_require__(233);
+	var buildURL = __webpack_require__(236);
+	var parseHeaders = __webpack_require__(237);
+	var isURLSameOrigin = __webpack_require__(238);
+	var createError = __webpack_require__(234);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(239);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -26483,7 +26288,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(242);
+	      var cookies = __webpack_require__(240);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -26560,12 +26365,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 235 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var createError = __webpack_require__(236);
+	var createError = __webpack_require__(234);
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -26591,12 +26396,12 @@
 
 
 /***/ },
-/* 236 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(237);
+	var enhanceError = __webpack_require__(235);
 
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -26614,7 +26419,7 @@
 
 
 /***/ },
-/* 237 */
+/* 235 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26639,12 +26444,12 @@
 
 
 /***/ },
-/* 238 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -26713,12 +26518,12 @@
 
 
 /***/ },
-/* 239 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	/**
 	 * Parse headers into an object
@@ -26756,12 +26561,12 @@
 
 
 /***/ },
-/* 240 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -26830,7 +26635,7 @@
 
 
 /***/ },
-/* 241 */
+/* 239 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26872,12 +26677,12 @@
 
 
 /***/ },
-/* 242 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -26931,12 +26736,12 @@
 
 
 /***/ },
-/* 243 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -26989,15 +26794,15 @@
 
 
 /***/ },
-/* 244 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
-	var transformData = __webpack_require__(245);
-	var isCancel = __webpack_require__(246);
-	var defaults = __webpack_require__(232);
+	var utils = __webpack_require__(227);
+	var transformData = __webpack_require__(243);
+	var isCancel = __webpack_require__(244);
+	var defaults = __webpack_require__(230);
 
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -27074,12 +26879,12 @@
 
 
 /***/ },
-/* 245 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(229);
+	var utils = __webpack_require__(227);
 
 	/**
 	 * Transform the data for a request or a response
@@ -27100,7 +26905,7 @@
 
 
 /***/ },
-/* 246 */
+/* 244 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27111,7 +26916,7 @@
 
 
 /***/ },
-/* 247 */
+/* 245 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27131,7 +26936,7 @@
 
 
 /***/ },
-/* 248 */
+/* 246 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27149,7 +26954,7 @@
 
 
 /***/ },
-/* 249 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27174,12 +26979,12 @@
 
 
 /***/ },
-/* 250 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Cancel = __webpack_require__(249);
+	var Cancel = __webpack_require__(247);
 
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -27237,7 +27042,7 @@
 
 
 /***/ },
-/* 251 */
+/* 249 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27270,7 +27075,133 @@
 
 
 /***/ },
-/* 252 */
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	// Search - queries the NYT API for articles. Displays API search results from another possible
+	// Query component and Results component. Gives the user the ability to save an article to their
+	// Saved Articles.
+
+	// Require dependencies
+	var React = __webpack_require__(1);
+
+	var Query = React.createClass({
+	    displayName: "Query",
+
+
+	    // Set initial state to blank values
+	    getInitialState: function getInitialState() {
+	        return {
+	            searchTopic: "",
+	            startYear: "",
+	            endYear: " "
+	        };
+	    },
+	    // handleSubmit: function() {
+	    //     console.log("Search clicked");
+	    //     return false;
+	    // },
+	    // Chrome console grumbled about having a value set without having an onChange event
+	    // to go with it
+	    handleChange: function handleChange(e) {
+	        console.log("input field changed");
+	        var changedState = {};
+	        changedState[e.target.id] = e.target.value;
+	        this.setState(changedState);
+	    },
+	    // Send the search terms to the parent component
+	    handleSubmit: function handleSubmit() {
+	        console.log("Submit clicked");
+
+	        console.log("this.state.searchTopic: ", this.state.searchTopic);
+	        console.log("this.state.startYear: ", this.state.startYear);
+	        console.log("this.state.endYear: ", this.state.endYear);
+
+	        this.props.submitSearch(this.state.searchTopic, this.state.startYear, this.state.endYear);
+	        return false;
+	    },
+
+	    // Render the Query component
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "container" },
+	            React.createElement(
+	                "div",
+	                { className: "row" },
+	                React.createElement(
+	                    "div",
+	                    { className: "col-sm-12" },
+	                    React.createElement(
+	                        "div",
+	                        { className: "panel panel-default" },
+	                        React.createElement(
+	                            "div",
+	                            { className: "panel-heading" },
+	                            React.createElement(
+	                                "h3",
+	                                { className: "panel-title" },
+	                                "Search"
+	                            )
+	                        ),
+	                        React.createElement(
+	                            "div",
+	                            { className: "panel-body" },
+	                            React.createElement(
+	                                "form",
+	                                null,
+	                                React.createElement(
+	                                    "div",
+	                                    { className: "form-group" },
+	                                    React.createElement(
+	                                        "label",
+	                                        null,
+	                                        "Topic"
+	                                    ),
+	                                    React.createElement("input", { type: "text", value: this.state.searchTopic, className: "form-control", id: "searchTopic", onChange: this.handleChange })
+	                                ),
+	                                React.createElement(
+	                                    "div",
+	                                    { className: "form-group" },
+	                                    React.createElement(
+	                                        "label",
+	                                        null,
+	                                        "Start Year"
+	                                    ),
+	                                    React.createElement("input", { type: "text", value: this.state.startYear, className: "form-control", id: "startYear", onChange: this.handleChange })
+	                                ),
+	                                React.createElement(
+	                                    "div",
+	                                    { className: "form-group" },
+	                                    React.createElement(
+	                                        "label",
+	                                        null,
+	                                        "End Year"
+	                                    ),
+	                                    React.createElement("input", { type: "text", value: this.state.endYear, className: "form-control", id: "endYear", onChange: this.handleChange })
+	                                ),
+	                                React.createElement(
+	                                    "button",
+	                                    { type: "submit", className: "btn btn-primary btn-lg btn-block", onClick: this.handleSubmit },
+	                                    "Search\xA0",
+	                                    React.createElement("span", { className: "glyphicon glyphicon-search" })
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	        );
+	    }
+
+	});
+
+	module.exports = Query;
+
+/***/ },
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27376,6 +27307,87 @@
 	});
 
 	module.exports = Results;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	// Include React 
+	var React = __webpack_require__(1);
+
+	var Saved = React.createClass({
+		displayName: "Saved",
+
+
+		// Here we render the component
+		render: function render() {
+
+			return React.createElement(
+				"div",
+				{ className: "container" },
+				React.createElement(
+					"div",
+					{ className: "row" },
+					React.createElement(
+						"div",
+						{ className: "col-sm-12" },
+						React.createElement(
+							"div",
+							{ className: "panel panel-default" },
+							React.createElement(
+								"div",
+								{ className: "panel-heading" },
+								React.createElement(
+									"h3",
+									{ className: "panel-title" },
+									"Saved Articles"
+								)
+							),
+							React.createElement(
+								"div",
+								{ className: "panel-body" },
+								React.createElement(
+									"p",
+									null,
+									React.createElement(
+										"strong",
+										null,
+										"mjlover:"
+									),
+									" OMG I LOVE THIS PART!!! "
+								),
+								React.createElement(
+									"p",
+									null,
+									React.createElement(
+										"strong",
+										null,
+										"bugsboy:"
+									),
+									" Best movie of all time."
+								),
+								React.createElement(
+									"p",
+									null,
+									React.createElement(
+										"strong",
+										null,
+										"bigtroll:"
+									),
+									" Porky needs to go on a diet."
+								)
+							)
+						)
+					)
+				)
+			);
+		}
+	});
+
+	// Export the component back for use in other files
+	module.exports = Saved;
 
 /***/ }
 /******/ ]);
