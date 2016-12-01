@@ -27205,6 +27205,10 @@
 	            pub_date: ""
 	        };
 	    },
+	    handleClick: function handleClick(thisItem, event) {
+	        console.log("Click to save article");
+	        console.log(thisItem);
+	    },
 	    render: function render() {
 	        if (!this.props.results.hasOwnProperty('docs')) {
 	            // If it is blank, return a default
@@ -27272,6 +27276,11 @@
 	                                { href: article.web_url },
 	                                "View Article"
 	                            )
+	                        ),
+	                        React.createElement(
+	                            "button",
+	                            { className: "btn btn-primary pull-right", onClick: this.handleClick.bind(this, article) },
+	                            "Save"
 	                        ),
 	                        React.createElement(
 	                            "p",

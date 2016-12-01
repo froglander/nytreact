@@ -10,6 +10,10 @@ var Results = React.createClass({
             pub_date: "",
         }
     },
+    handleClick: function(thisItem, event) {
+        console.log("Click to save article");
+        console.log(thisItem);
+    },
     render: function () {
         if (!this.props.results.hasOwnProperty('docs')) {
             // If it is blank, return a default
@@ -43,6 +47,7 @@ var Results = React.createClass({
                         <li className="list-group-item">
                             <h3>{article.headline.main}</h3>
                             <h4><a href={article.web_url}>View Article</a></h4>
+                            <button className="btn btn-primary pull-right" onClick={this.handleClick.bind(this, article)}>Save</button>
                             <p>Date published: {article.pub_date}</p>
                         </li>
                     </div>
