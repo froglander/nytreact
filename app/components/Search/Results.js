@@ -1,4 +1,5 @@
 var React = require('react');
+var axios = require('axios');
 
 var Results = React.createClass({
 
@@ -11,12 +12,22 @@ var Results = React.createClass({
         }
     },
     handleClick: function(thisItem, event) {
-        console.log("Click to save article");
-        console.log(thisItem);
+        // console.log("Click to save article");
+        // console.log(thisItem);
+
+        var newArticle = {title: thisItem.headline.main, date: thisItem.pub_date, url: thisItem.web_url };
+        // console.log("click article:", newArticle);
+        return axios.post('/api/saved', newArticle)
+            .then(function(results) {
+                console.log("mongoose id:", results.data);
+                return results.data;
+            }.bind(this))
+
     },
     render: function () {
         if (!this.props.results.hasOwnProperty('docs')) {
-            // If it is blank, return a default
+            // If it is blank, return a default, ended up adding all the <divs> because otherwise the formatting
+            // was off
             return (
                 <div className="container">
                     <div className="row">

@@ -27189,12 +27189,13 @@
 /* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
+	var axios = __webpack_require__(225);
 
 	var Results = React.createClass({
-	    displayName: "Results",
+	    displayName: 'Results',
 
 
 	    getInitialState: function getInitialState() {
@@ -27206,46 +27207,54 @@
 	        };
 	    },
 	    handleClick: function handleClick(thisItem, event) {
-	        console.log("Click to save article");
-	        console.log(thisItem);
+	        // console.log("Click to save article");
+	        // console.log(thisItem);
+
+	        var newArticle = { title: thisItem.headline.main, date: thisItem.pub_date, url: thisItem.web_url };
+	        // console.log("click article:", newArticle);
+	        return axios.post('/api/saved', newArticle).then(function (results) {
+	            console.log("mongoose id:", results.data);
+	            return results.data;
+	        }.bind(this));
 	    },
 	    render: function render() {
 	        if (!this.props.results.hasOwnProperty('docs')) {
-	            // If it is blank, return a default
+	            // If it is blank, return a default, ended up adding all the <divs> because otherwise the formatting
+	            // was off
 	            return React.createElement(
-	                "div",
-	                { className: "container" },
+	                'div',
+	                { className: 'container' },
 	                React.createElement(
-	                    "div",
-	                    { className: "row" },
+	                    'div',
+	                    { className: 'row' },
 	                    React.createElement(
-	                        "div",
-	                        { className: "col-sm-12" },
+	                        'div',
+	                        { className: 'col-sm-12' },
 	                        React.createElement(
-	                            "div",
-	                            { className: "panel panel-default" },
+	                            'div',
+	                            { className: 'panel panel-default' },
 	                            React.createElement(
-	                                "div",
-	                                { className: "panel-heading" },
+	                                'div',
+	                                { className: 'panel-heading' },
 	                                React.createElement(
-	                                    "h3",
-	                                    { className: "panel-title" },
-	                                    "Results"
+	                                    'h3',
+	                                    { className: 'panel-title' },
+	                                    'Results'
 	                                )
 	                            ),
 	                            React.createElement(
-	                                "div",
-	                                { className: "panel-body" },
+	                                'div',
+	                                { className: 'panel-body' },
 	                                React.createElement(
-	                                    "ul",
-	                                    { className: "list-group" },
+	                                    'ul',
+	                                    { className: 'list-group' },
 	                                    React.createElement(
-	                                        "li",
-	                                        { className: "list-group-item" },
+	                                        'li',
+	                                        { className: 'list-group-item' },
 	                                        React.createElement(
-	                                            "h3",
+	                                            'h3',
 	                                            null,
-	                                            "Enter search terms to begin"
+	                                            'Enter search terms to begin'
 	                                        )
 	                                    )
 	                                )
@@ -27258,34 +27267,34 @@
 	            // Otherwise, build the resultset and return it
 	            var articles = this.props.results.docs.map(function (article, index) {
 	                return React.createElement(
-	                    "div",
+	                    'div',
 	                    { key: index },
 	                    React.createElement(
-	                        "li",
-	                        { className: "list-group-item" },
+	                        'li',
+	                        { className: 'list-group-item' },
 	                        React.createElement(
-	                            "h3",
+	                            'h3',
 	                            null,
 	                            article.headline.main
 	                        ),
 	                        React.createElement(
-	                            "h4",
+	                            'h4',
 	                            null,
 	                            React.createElement(
-	                                "a",
+	                                'a',
 	                                { href: article.web_url },
-	                                "View Article"
+	                                'View Article'
 	                            )
 	                        ),
 	                        React.createElement(
-	                            "button",
-	                            { className: "btn btn-primary pull-right", onClick: this.handleClick.bind(this, article) },
-	                            "Save"
+	                            'button',
+	                            { className: 'btn btn-primary pull-right', onClick: this.handleClick.bind(this, article) },
+	                            'Save'
 	                        ),
 	                        React.createElement(
-	                            "p",
+	                            'p',
 	                            null,
-	                            "Date published: ",
+	                            'Date published: ',
 	                            article.pub_date
 	                        )
 	                    )
@@ -27295,32 +27304,32 @@
 
 	        // Now render the results!
 	        return React.createElement(
-	            "div",
-	            { className: "container" },
+	            'div',
+	            { className: 'container' },
 	            React.createElement(
-	                "div",
-	                { className: "row" },
+	                'div',
+	                { className: 'row' },
 	                React.createElement(
-	                    "div",
-	                    { className: "col-sm-12" },
+	                    'div',
+	                    { className: 'col-sm-12' },
 	                    React.createElement(
-	                        "div",
-	                        { className: "panel panel-default" },
+	                        'div',
+	                        { className: 'panel panel-default' },
 	                        React.createElement(
-	                            "div",
-	                            { className: "panel-heading" },
+	                            'div',
+	                            { className: 'panel-heading' },
 	                            React.createElement(
-	                                "h3",
-	                                { className: "panel-title" },
-	                                "Results"
+	                                'h3',
+	                                { className: 'panel-title' },
+	                                'Results'
 	                            )
 	                        ),
 	                        React.createElement(
-	                            "div",
-	                            { className: "panel-body" },
+	                            'div',
+	                            { className: 'panel-body' },
 	                            React.createElement(
-	                                "ul",
-	                                { className: "list-group" },
+	                                'ul',
+	                                { className: 'list-group' },
 	                                articles
 	                            )
 	                        )
@@ -27337,71 +27346,121 @@
 /* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	// Include React 
 	var React = __webpack_require__(1);
+	var axios = __webpack_require__(225);
 
 	var Saved = React.createClass({
-		displayName: "Saved",
+		displayName: 'Saved',
 
 
+		getInitialState: function getInitialState() {
+			return {
+				savedArticles: ""
+			};
+		},
+
+		componentDidMount: function componentDidMount() {
+			return axios.get('/api/saved').then(function (results) {
+				console.log("axios results", results);
+				return results;
+			}).then(function (articleData) {
+				this.setState({
+					savedArticles: articleData.data
+				});
+				console.log("saved stuff");
+			}.bind(this));
+		},
+
+		handleClick: function handleClick(item, event) {
+			console.log("handleClick delete");
+			console.log(item);
+
+			// Code to delete an item
+
+			// Code to update the list
+		},
 		// Here we render the component
 		render: function render() {
 
-			return React.createElement(
-				"div",
-				{ className: "container" },
-				React.createElement(
-					"div",
-					{ className: "row" },
+			if (this.state.savedArticles == "") {
+				return React.createElement(
+					'li',
+					{ className: 'list-group-item' },
 					React.createElement(
-						"div",
-						{ className: "col-sm-12" },
+						'h3',
+						null,
+						'No articles saved :('
+					)
+				);
+			} else {
+				var articles = this.state.savedArticles.map(function (article, index) {
+					return React.createElement(
+						'div',
+						{ key: index },
 						React.createElement(
-							"div",
-							{ className: "panel panel-default" },
+							'li',
+							{ className: 'list-group-item' },
 							React.createElement(
-								"div",
-								{ className: "panel-heading" },
+								'h3',
+								null,
+								article.title
+							),
+							React.createElement(
+								'h4',
+								null,
 								React.createElement(
-									"h3",
-									{ className: "panel-title" },
-									"Saved Articles"
+									'a',
+									{ href: article.url },
+									'View Article'
 								)
 							),
 							React.createElement(
-								"div",
-								{ className: "panel-body" },
+								'button',
+								{ className: 'btn btn-primary pull-right', onClick: this.handleClick.bind(this, article) },
+								'Delete'
+							),
+							React.createElement(
+								'p',
+								null,
+								'Date published: ',
+								article.date
+							)
+						)
+					);
+				}.bind(this));
+			}
+
+			return React.createElement(
+				'div',
+				{ className: 'container' },
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(
+						'div',
+						{ className: 'col-sm-12' },
+						React.createElement(
+							'div',
+							{ className: 'panel panel-default' },
+							React.createElement(
+								'div',
+								{ className: 'panel-heading' },
 								React.createElement(
-									"p",
-									null,
-									React.createElement(
-										"strong",
-										null,
-										"mjlover:"
-									),
-									" OMG I LOVE THIS PART!!! "
-								),
+									'h3',
+									{ className: 'panel-title' },
+									'Saved Articles'
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'panel-body' },
 								React.createElement(
-									"p",
-									null,
-									React.createElement(
-										"strong",
-										null,
-										"bugsboy:"
-									),
-									" Best movie of all time."
-								),
-								React.createElement(
-									"p",
-									null,
-									React.createElement(
-										"strong",
-										null,
-										"bigtroll:"
-									),
-									" Porky needs to go on a diet."
+									'ul',
+									{ className: 'list-group' },
+									articles
 								)
 							)
 						)

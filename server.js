@@ -4,6 +4,9 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
+// Mongoose schemas
+var Article = require('./models/Article');
+
 // Express
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -39,6 +42,7 @@ app.get('/', function(req, res) {
 // GET saved articles route
 app.get('/api/saved', function(req, res) {
     // Retrive all articles
+    console.log("Retrieve saved articles");
     Article.find({})
         .exec(function(err, doc) {
             if(err) {
@@ -50,18 +54,22 @@ app.get('/api/saved', function(req, res) {
 });
 
 // POST an article to save
-app.post('/api/saved', function(req, res) {
-    var saveArticle = new Article(req.body);
+app.post('/api/saved', function(req, res){
+    console.log("Post an article to save");
+
+    var newArticle = new Article(req.body);
+
+    console.log(req.body)
 
     var title = req.body.title;
     var date = req.body.date;
     var url = req.body.url;
 
-    saveArticle.save(function(err, doc) {
-        if(err) {
-            console.log("Error:", err);
+    newArticle.save(function(err, doc){
+        if(err){
+            console.log(err);
         } else {
-            // Return mongoose ide of document (article)
+            // Return mongoose id of documente saved
             res.send(doc._id);
         }
     });
