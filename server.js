@@ -75,6 +75,19 @@ app.post('/api/saved', function(req, res){
     });
 });
 
+// DELETE an article from the saved list
+app.delete('/api/saved/', function(req, res) {
+    var url = req.param('url');
+
+    Article.find({"url": url}).remove().exec(function(err, data) {
+        if(err){
+            console.log("Error on delete: ", err);
+        } else {
+            res.send("Deleted");
+        }
+    });
+});
+
 app.listen(PORT, function() {
     console.log("App listening on PORT: ", PORT);
 });

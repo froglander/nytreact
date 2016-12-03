@@ -27353,121 +27353,141 @@
 	var axios = __webpack_require__(225);
 
 	var Saved = React.createClass({
-		displayName: 'Saved',
+	    displayName: 'Saved',
 
 
-		getInitialState: function getInitialState() {
-			return {
-				savedArticles: ""
-			};
-		},
+	    getInitialState: function getInitialState() {
+	        return {
+	            savedArticles: ""
+	        };
+	    },
 
-		componentDidMount: function componentDidMount() {
-			return axios.get('/api/saved').then(function (results) {
-				console.log("axios results", results);
-				return results;
-			}).then(function (articleData) {
-				this.setState({
-					savedArticles: articleData.data
-				});
-				console.log("saved stuff");
-			}.bind(this));
-		},
+	    componentDidMount: function componentDidMount() {
+	        return axios.get('/api/saved').then(function (results) {
+	            console.log("axios results", results);
+	            return results;
+	        }).then(function (articleData) {
+	            this.setState({
+	                savedArticles: articleData.data
+	            });
+	            console.log("saved stuff");
+	        }.bind(this));
+	    },
 
-		handleClick: function handleClick(item, event) {
-			console.log("handleClick delete");
-			console.log(item);
+	    handleClick: function handleClick(item, event) {
+	        console.log("handleClick delete");
+	        console.log(item);
 
-			// Code to delete an item
+	        // Code to delete an item
+	        return axios.delete('/api/saved', {
+	            params: {
+	                'title': item.title,
+	                'date': item.data,
+	                'url': item.url
+	            }
+	        }).then(function (results) {
+	            console.log("axios delete resutls: ", results);
+	            return results;
+	        }).then(function (data) {
+	            // Code to get updated list
+	            return axios.get('/api/saved').then(function (results) {
+	                console.log("axios results", results);
+	                return results;
+	            }).then(function (articleData) {
+	                this.setState({
+	                    savedArticles: articleData.data
+	                });
+	                console.log("saved stuff");
+	            }.bind(this));
+	        }.bind(this));
+	    },
+	    // Here we render the component
+	    render: function render() {
 
-			// Code to update the list
-		},
-		// Here we render the component
-		render: function render() {
+	        if (this.state.savedArticles == "") {
+	            return React.createElement(
+	                'li',
+	                { className: 'list-group-item' },
+	                React.createElement(
+	                    'h3',
+	                    null,
+	                    'No articles saved :('
+	                )
+	            );
+	        } else {
+	            var articles = this.state.savedArticles.map(function (article, index) {
+	                return React.createElement(
+	                    'div',
+	                    { key: index },
+	                    React.createElement(
+	                        'li',
+	                        { className: 'list-group-item' },
+	                        React.createElement(
+	                            'h3',
+	                            null,
+	                            article.title
+	                        ),
+	                        React.createElement(
+	                            'h4',
+	                            null,
+	                            React.createElement(
+	                                'a',
+	                                { href: article.url },
+	                                'View Article'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary pull-right',
+	                                onClick: this.handleClick.bind(this, article) },
+	                            'Delete'
+	                        ),
+	                        React.createElement(
+	                            'p',
+	                            null,
+	                            'Date published: ',
+	                            article.date
+	                        )
+	                    )
+	                );
+	            }.bind(this));
+	        }
 
-			if (this.state.savedArticles == "") {
-				return React.createElement(
-					'li',
-					{ className: 'list-group-item' },
-					React.createElement(
-						'h3',
-						null,
-						'No articles saved :('
-					)
-				);
-			} else {
-				var articles = this.state.savedArticles.map(function (article, index) {
-					return React.createElement(
-						'div',
-						{ key: index },
-						React.createElement(
-							'li',
-							{ className: 'list-group-item' },
-							React.createElement(
-								'h3',
-								null,
-								article.title
-							),
-							React.createElement(
-								'h4',
-								null,
-								React.createElement(
-									'a',
-									{ href: article.url },
-									'View Article'
-								)
-							),
-							React.createElement(
-								'button',
-								{ className: 'btn btn-primary pull-right', onClick: this.handleClick.bind(this, article) },
-								'Delete'
-							),
-							React.createElement(
-								'p',
-								null,
-								'Date published: ',
-								article.date
-							)
-						)
-					);
-				}.bind(this));
-			}
-
-			return React.createElement(
-				'div',
-				{ className: 'container' },
-				React.createElement(
-					'div',
-					{ className: 'row' },
-					React.createElement(
-						'div',
-						{ className: 'col-sm-12' },
-						React.createElement(
-							'div',
-							{ className: 'panel panel-default' },
-							React.createElement(
-								'div',
-								{ className: 'panel-heading' },
-								React.createElement(
-									'h3',
-									{ className: 'panel-title' },
-									'Saved Articles'
-								)
-							),
-							React.createElement(
-								'div',
-								{ className: 'panel-body' },
-								React.createElement(
-									'ul',
-									{ className: 'list-group' },
-									articles
-								)
-							)
-						)
-					)
-				)
-			);
-		}
+	        return React.createElement(
+	            'div',
+	            { className: 'container' },
+	            React.createElement(
+	                'div',
+	                { className: 'row' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'col-sm-12' },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'panel panel-default' },
+	                        React.createElement(
+	                            'div',
+	                            { className: 'panel-heading' },
+	                            React.createElement(
+	                                'h3',
+	                                { className: 'panel-title' },
+	                                'Saved Articles'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'div',
+	                            { className: 'panel-body' },
+	                            React.createElement(
+	                                'ul',
+	                                { className: 'list-group' },
+	                                articles
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	        );
+	    }
 	});
 
 	// Export the component back for use in other files
