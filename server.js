@@ -20,7 +20,13 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 
 app.use(express.static('./public'));
 
-mongoose.connect('mongodb://localhost/nyreact');
+/* ************************************************************************ */
+/*                                 Mongoose                                 */
+/* ************************************************************************ */
+//mongoose.connect('mongodb://localhost/nyreact');
+mongoose.connect('mongodb://heroku_lq53bpq6:qnmj7a2cngco4svmn7jf5bjaeq@ds119728.mlab.com:19728/heroku_lq53bpq6');
+
+
 var db = mongoose.connection;
 
 db.on("error", function(err) {
